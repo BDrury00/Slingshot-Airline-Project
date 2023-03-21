@@ -38,7 +38,7 @@ app
 
   .post("/api/add-reservation", addReservation)
 
-  .patch("/api/update-reservation", updateReservation)
+  .patch("/api/update-reservation/:id", updateReservation)
 
   .delete("/api/delete-reservation/:reservation", deleteReservation)
 

@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
 const flights = require("./data.js");
+const reservations = require("./data.js");
 const uri =
   "mongodb+srv://slingair:bestairline@cluster0.50bpam6.mongodb.net/Slingair_DB?retryWrites=true&w=majority";
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -37,5 +38,7 @@ const dbFunction = async (dbName) => {
   await client.close();
   console.log("Disconnected from server");
 };
+
+// changed the array of reservations from "flight" to "resurvs" in the datatype "reservations" document
 
 module.exports = dbFunction;
