@@ -7,11 +7,37 @@ import Form from "./Form";
 const SeatSelect = ({ selectedFlight, setReservationId }) => {
   const [selectedSeat, setSelectedSeat] = useState("");
 
-  const handleSubmit = (e, formData) => {
+  const handleSubmit = async (e, formData) => {
     e.preventDefault();
-    // TODO: POST info to server
-    // TODO: Save reservationId in local storage
-    // TODO: Redirect to confirmation page
+    // POST info to server
+    const response = await fetch("/api/add-reservation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        flight: selectedFlight,
+        seat: selectedSeat,
+        givenName: formData.firstName,
+        surname: formData.lastName,
+        email: formData.email,
+      }),
+    });
+
+    if (!response.ok) {
+      console.log("Error occurred while creating reservation");
+      return;
+    }
+
+    const data = await response.json();
+    const reservationId = data.data._id;
+
+    // Save reservationId in local storage
+    localStorage.setItem("reservationId", reservationId);
+    setReservationId(reservationId);
+
+    // Redirect to confirmation page
+    window.location.href = `/confirmation/`;
   };
 
   return (

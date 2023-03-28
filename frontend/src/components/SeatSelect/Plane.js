@@ -9,7 +9,7 @@ const Plane = ({ setSelectedSeat, selectedFlight }) => {
     if (selectedFlight) {
       fetch(`/api/get-flight/${selectedFlight}`)
         .then((response) => response.json())
-        .then((data) => setSeating(data.flightData))
+        .then((data) => setSeating(data.data.seats))
         .catch((error) => console.log(error));
     }
   }, [selectedFlight]);
