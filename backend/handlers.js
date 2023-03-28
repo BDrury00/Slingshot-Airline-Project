@@ -51,7 +51,7 @@ const getFlight = async (req, res) => {
       console.log("Error: User requested a flight number that doesn't exist");
       return res.status(404).json({ message: "Flight not found" });
     }
-    res.status(200).json({ res: 200, data: flight.seats });
+    res.status(200).json({ res: 200, data: flight });
     console.log(flight.seats);
   } catch (error) {
     console.log(error);
@@ -119,6 +119,26 @@ const getSingleReservation = async (req, res) => {
 // creates a new reservation
 const addReservation = async (req, res) => {
   const { flight, seat, givenName, surname, email } = req.body;
+
+  // check to make sure the body sent has givenName and surname and email
+  if (!givenName) {
+    return res
+      .status(400)
+      .json({ status: 400, message: "Please provide a givenName" });
+  }
+
+  if (!surname) {
+    return res
+      .status(400)
+      .json({ status: 400, message: "Please provide a surname" });
+  }
+
+  if (!email) {
+    return res
+      .status(400)
+      .json({ status: 400, message: "Please provide an email" });
+  }
+  //randomly generated id
   const reservationId = uuidv4();
 
   try {
@@ -181,6 +201,7 @@ const updateReservation = async (req, res) => {
   const { seat, givenName, surname, email } = req.body;
 
   try {
+    await client.connect();
     const db = client.db("Slingair_DB");
     const flightsCollection = db.collection("flights");
     const reservationsCollection = db.collection("reservations");
@@ -236,7 +257,7 @@ const updateReservation = async (req, res) => {
       { flightNumber: reservation.flight },
       { $set: { seats: flight.seats } }
     );
-
+    client.close();
     res
       .status(200)
       .json({ status: 200, message: "Reservation updated successfully" });
@@ -251,6 +272,7 @@ const deleteReservation = async (req, res) => {
   const reservationId = req.params.reservation;
 
   try {
+    await client.connect();
     const db = client.db("Slingair_DB");
     const flightsCollection = db.collection("flights");
     const reservationsCollection = db.collection("reservations");
@@ -286,10 +308,11 @@ const deleteReservation = async (req, res) => {
       { flightNumber: reservation.flight },
       { $set: { seats: flight.seats } }
     );
-
-    res
-      .status(200)
-      .json({ status: 200, message: "Reservation deleted successfully" });
+    client.close();
+    res.status(200).json({
+      status: 200,
+      message: `Reservation with the email of: ${reservation.email} has been successfully deleted`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: 500, message: "Server error" });

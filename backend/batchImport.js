@@ -10,7 +10,7 @@ const flightsArray = [];
 
 // transform the data:
 for (const [flightNumber, seats] of Object.entries(flights)) {
-  const flight = { flightNumber, seats };
+  const flight = { _id: flightNumber, flightNumber, seats };
   flightsArray.push(flight);
 }
 
