@@ -1,7 +1,5 @@
 "use strict";
 //import MongoDB shtuff
-const dbFunction = require("./database.js");
-dbFunction("Slingair_DB");
 
 // import the needed node_modules.
 const express = require("express");
