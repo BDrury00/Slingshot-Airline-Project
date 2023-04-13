@@ -19,7 +19,7 @@ const Header = ({ handleChange, reservationId }) => {
       }
     };
     fetchFlightNumbers();
-  }, []);
+  }, [reservationId]);
 
   return (
     <Wrapper>
@@ -42,7 +42,9 @@ const Header = ({ handleChange, reservationId }) => {
       <Nav>
         <>
           {/* TODO: only show link if the user has a reservation already */}
-          <StyledNavLink to="/reservation">Reservation</StyledNavLink>
+          {reservationId && (
+            <StyledNavLink to="/reservation">Reservation</StyledNavLink>
+          )}
         </>
       </Nav>
     </Wrapper>

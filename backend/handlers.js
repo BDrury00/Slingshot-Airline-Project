@@ -97,7 +97,6 @@ const getSingleReservation = async (req, res) => {
     const collection = db.collection("reservations");
     const reservationById = await collection.findOne({ _id });
 
-    client.close();
     if (!reservationById) {
       console.log("Error: User requested a reservation that doesn't exist");
       return res
@@ -112,6 +111,7 @@ const getSingleReservation = async (req, res) => {
       .status(500)
       .json({ status: 500, message: "Error retrieving reservation data" });
   }
+  client.close();
 };
 
 // ---------------------------------------------^^Done^^---------------------------------------------
@@ -180,7 +180,6 @@ const addReservation = async (req, res) => {
       reservationsCollection.insertOne(newReservation),
     ]);
 
-    client.close();
     res.status(201).json({
       status: 201,
       data: newReservation,
@@ -190,6 +189,7 @@ const addReservation = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(400).json({ status: 400, message: error.message });
+    client.close();
   }
 };
 

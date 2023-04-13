@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 import Plane from "./Plane";
 import Form from "./Form";
+import { useNavigate } from "react-router-dom";
 
 const SeatSelect = ({ selectedFlight, setReservationId }) => {
   const [selectedSeat, setSelectedSeat] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e, formData) => {
     e.preventDefault();
     // POST info to server
@@ -30,6 +31,8 @@ const SeatSelect = ({ selectedFlight, setReservationId }) => {
     }
 
     const data = await response.json();
+    console.log("seat select");
+    console.log(data);
     const reservationId = data.data._id;
 
     // Save reservationId in local storage
@@ -37,7 +40,7 @@ const SeatSelect = ({ selectedFlight, setReservationId }) => {
     setReservationId(reservationId);
 
     // Redirect to confirmation page
-    window.location.href = `/confirmation/`;
+    navigate(`/confirmation`);
   };
 
   return (

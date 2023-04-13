@@ -13,8 +13,7 @@ const App = () => {
   const [selectedFlight, setSelectedFlight] = useState("");
   const [reservationId, setReservationId] = useState(() => {
     const storedValue = window.localStorage.getItem("reservationId");
-
-    return storedValue !== null ? JSON.parse(storedValue) : storedValue;
+    return storedValue;
   });
 
   const handleChange = (e) => {
